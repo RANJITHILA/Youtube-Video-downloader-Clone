@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #d63447;
+        }
+
+        /* Form styling */
+        #downloadForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #d63447;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #b3213b;
+        }
+
+        /* Message styling */
+        #message {
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Video Downloader</h1>
+    <form id="downloadForm">
+        <label for="url">Enter YouTube Video URL:</label>
+        <input type="text" id="url" name="url" required placeholder="https://www.youtube.com/watch?v=example">
+        <button type="submit">Download</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("downloadForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+
+            const urlInput = document.getElementById("url").value;
+
+            // Make a POST request to the backend
+            const response = await fetch("http://127.0.0.1:8000/download", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ url: urlInput })
+            });
+
+            const result = await response.json();
+            document.getElementById("message").textContent = result.message || "An error occurred";
+        });
+    </script>
+</body>
+</html>
